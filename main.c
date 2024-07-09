@@ -38,24 +38,32 @@ int main (void)
 	struct winsize w;
 	int frames = 1;
 	engine.running = 1;
-	struct Point p1;
 
-	p1.x = 0;
-	p1.y = 0;
+	int point_nbr = 20;
+	struct Point p[20];
+
+	for (int i = 0; i < point_nbr; i++)
+	{
+		p[i].x = 1 + i;
+		p[i].y = 1 + i;
+	}
 
 	while (engine.running)
 	{
-		if(p1.x - 1 > w.ws_row)
-			p1.x = 0;
-		if(p1.y - 1 > w.ws_col)
-			p1.y = 0;
-		p1.x++;
-		p1.y += ASPECT_RATIO;
+		clear_screen();
+		for (int i = 0; i < point_nbr; i++)
+		{
+			p[i].y += ASPECT_RATIO;
+			p[i].x++;
+			if(p[i].y >= w.ws_col)
+				p[i].y = 0;
+			if(p[i].x >= w.ws_row)
+				p[i].x = 0;
+			put_point(p[i].x / 1, p[i].y / 1, '@');
+		}
 
 		ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
-		clear_screen();
-		put_point(p1.x / 1, p1.y / 1, '@');
 		print_debug_info(w.ws_row, w.ws_col, frames);
 		frames++;
 		usleep(SLEEP);
