@@ -15,10 +15,10 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rf -f $(OBJS)
+	rm -f $(OBJS) &
 
 fclean: clean
-	rf -f $(NAME)
+	rm -f $(NAME) &
 
 re: fclean all
 
